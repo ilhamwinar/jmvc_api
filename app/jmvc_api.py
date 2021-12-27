@@ -4,9 +4,10 @@ from typing import Optional
 from influxdb import InfluxDBClient
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-# import array 
-from datetime import datetime
-from dateutil import tz
+import pytz
+from datetime import *
+#from dateutil import tz
+
 app = FastAPI()
 origins = ["*"]
 smp_gol1=1
@@ -22,9 +23,8 @@ beban_ruas=90479
 # Fcw=1.02
 # Fcsp=1
 capacity=8147*2
-from_zone = tz.gettz('UTC')
-to_zone = tz.gettz('Indonesia/Jakarta')
-
+UTC = pytz.timezone('UTC')
+local_timezone = pytz.timezone('Asia/Jakarta')
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -45,8 +45,8 @@ def minutes():
     for measurement in query_minutes.get_points(measurement='counter_data'):
         x_minutes=measurement['time'].split(":")[0][0:10]+" "+measurement['time'].split(":")[0][11:13]+':'+measurement['time'].split(":")[1]+':'+measurement["time"].split(":")[2]
         utc = datetime.strptime(x_minutes[0:19], '%Y-%m-%d %H:%M:%S')
-        utc = utc.replace(tzinfo=from_zone)
-        local = utc.astimezone(to_zone)
+        utc = utc.replace(tzinfo=UTC)
+        local = utc.astimezone(local_timezone)
         string_minutes=local.strftime('%Y-%m-%d %H:%M:%S')[0:19]
         if measurement["sum_speed_down"] is not None:
             speed_down_converted=round(measurement["sum_speed_down"], 2)
@@ -84,8 +84,8 @@ def hours():
     for measurement in query_hours.get_points(measurement='counter_data'):
         x_hours=measurement['time'].split(":")[0][0:10]+" "+measurement['time'].split(":")[0][11:13]+':'+measurement['time'].split(":")[1]+':'+measurement["time"].split(":")[2]
         utc = datetime.strptime(x_hours[0:19], '%Y-%m-%d %H:%M:%S')
-        utc = utc.replace(tzinfo=from_zone)
-        local = utc.astimezone(to_zone)
+        utc = utc.replace(tzinfo=UTC)
+        local = utc.astimezone(local_timezone)
         string_hours=local.strftime('%Y-%m-%d %H:%M:%S')[0:19]
         if measurement['mean'] is not None:
             speed_down_converted=round(measurement["mean"], 2)
@@ -124,8 +124,8 @@ def days():
     for measurement in query_days.get_points(measurement='counter_data'):
         x_days=measurement['time'].split(":")[0][0:10]+" "+measurement['time'].split(":")[0][11:13]+':'+measurement['time'].split(":")[1]+':'+measurement["time"].split(":")[2]
         utc = datetime.strptime(x_days[0:19], '%Y-%m-%d %H:%M:%S')
-        utc = utc.replace(tzinfo=from_zone)
-        local = utc.astimezone(to_zone)
+        utc = utc.replace(tzinfo=UTC)
+        local = utc.astimezone(local_timezone)
         string_days=local.strftime('%Y-%m-%d %H:%M:%S')[0:19]       
         if measurement['mean'] is not None:
             speed_down_converted=round(measurement["mean"], 2)

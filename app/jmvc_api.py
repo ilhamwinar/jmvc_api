@@ -5,8 +5,8 @@ from influxdb import InfluxDBClient
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 # import array 
-from datetime import datetime, time
-from dateutil import tz, parser
+from datetime import datetime
+from dateutil import tz
 app = FastAPI()
 origins = ["*"]
 smp_gol1=1
@@ -200,9 +200,9 @@ def vc_ratio_minutes():
     v_total_down=v_bus_l_down+v_bus_s_down+v_car_down+v_truck_xl_down+v_truck_l_down+v_truck_m_down+v_truck_s_down
     vc_ratio_down=round((v_total_down/capacity),2)
 
-    json_vc_ratio = {"vc_ratio_up":vc_ratio_up,"presentase_bus_l_up":presentase_bus_l_up,"presentase_bus_s_up":presentase_bus_s_up,"presentase_car_up":presentase_car_up,
+    json_vc_ratio = {"v_up_total":v_up_total,"vc_ratio_up":vc_ratio_up,"presentase_bus_l_up":presentase_bus_l_up,"presentase_bus_s_up":presentase_bus_s_up,"presentase_car_up":presentase_car_up,
     "presentase_truck_l_up":presentase_truck_l_up,"presentase_truck_s_up":presentase_truck_s_up,"presentase_truck_m_up":presentase_truck_m_up,
-    "presentase_truck_xl_up":presentase_truck_xl_up,"vc_ratio_down":vc_ratio_down,"presentase_bus_l_down":presentase_bus_l_down,
+    "presentase_truck_xl_up":presentase_truck_xl_up,"v_down_total":v_down_total,"vc_ratio_down":vc_ratio_down,"presentase_bus_l_down":presentase_bus_l_down,
     "presentase_bus_s_down":presentase_bus_s_down,"presentase_car_down":presentase_car_down,"presentase_truck_l_down":presentase_truck_l_down,
     "presentase_truck_s_down":presentase_truck_s_down,"presentase_truck_m_down":presentase_truck_m_down,"presentase_truck_xl_down":presentase_truck_xl_down,}
     
@@ -249,9 +249,9 @@ def vc_ratio_hours():
     v_total_down=v_bus_l_down+v_bus_s_down+v_car_down+v_truck_xl_down+v_truck_l_down+v_truck_m_down+v_truck_s_down
     vc_ratio_down=round((v_total_down/capacity),2) 
 
-    json_vc_ratio = {"vc_ratio_up":vc_ratio_up,"presentase_bus_l_up":presentase_bus_l_up,"presentase_bus_s_up":presentase_bus_s_up,"presentase_car_up":presentase_car_up,
+    json_vc_ratio = {"v_up_total":v_up_total,"vc_ratio_up":vc_ratio_up,"presentase_bus_l_up":presentase_bus_l_up,"presentase_bus_s_up":presentase_bus_s_up,"presentase_car_up":presentase_car_up,
     "presentase_truck_l_up":presentase_truck_l_up,"presentase_truck_s_up":presentase_truck_s_up,"presentase_truck_m_up":presentase_truck_m_up,
-    "presentase_truck_xl_up":presentase_truck_xl_up,"vc_ratio_down":vc_ratio_down,"presentase_bus_l_down":presentase_bus_l_down,
+    "presentase_truck_xl_up":presentase_truck_xl_up,"v_down_total":v_down_total,"vc_ratio_down":vc_ratio_down,"presentase_bus_l_down":presentase_bus_l_down,
     "presentase_bus_s_down":presentase_bus_s_down,"presentase_car_down":presentase_car_down,"presentase_truck_l_down":presentase_truck_l_down,
     "presentase_truck_s_down":presentase_truck_s_down,"presentase_truck_m_down":presentase_truck_m_down,"presentase_truck_xl_down":presentase_truck_xl_down,}
     
@@ -299,12 +299,12 @@ def vc_ratio_days():
     v_total_down=v_bus_l_down+v_bus_s_down+v_car_down+v_truck_xl_down+v_truck_l_down+v_truck_m_down+v_truck_s_down
     vc_ratio_down=round((v_total_down/capacity),2) 
 
-    json_vc_ratio = {"vc_ratio_up":vc_ratio_up,"presentase_bus_l_up":presentase_bus_l_up,"presentase_bus_s_up":presentase_bus_s_up,"presentase_car_up":presentase_car_up,
+    json_vc_ratio = {"v_up_total":v_up_total,"vc_ratio_up":vc_ratio_up,"presentase_bus_l_up":presentase_bus_l_up,"presentase_bus_s_up":presentase_bus_s_up,"presentase_car_up":presentase_car_up,
     "presentase_truck_l_up":presentase_truck_l_up,"presentase_truck_s_up":presentase_truck_s_up,"presentase_truck_m_up":presentase_truck_m_up,
-    "presentase_truck_xl_up":presentase_truck_xl_up,"vc_ratio_down":vc_ratio_down,"presentase_bus_l_down":presentase_bus_l_down,
+    "presentase_truck_xl_up":presentase_truck_xl_up,"v_down_total":v_down_total,"vc_ratio_down":vc_ratio_down,"presentase_bus_l_down":presentase_bus_l_down,
     "presentase_bus_s_down":presentase_bus_s_down,"presentase_car_down":presentase_car_down,"presentase_truck_l_down":presentase_truck_l_down,
     "presentase_truck_s_down":presentase_truck_s_down,"presentase_truck_m_down":presentase_truck_m_down,"presentase_truck_xl_down":presentase_truck_xl_down,}
-    
+
     return json_vc_ratio
 
 
@@ -334,4 +334,4 @@ async def vc_ratio_day():
     return vc_ratio_days()
 
 if __name__ == "__main__":
-    uvicorn.run("jmvc_api:app", host="192.168.99.27", port=8080,log_level="info",reload=True)
+    uvicorn.run("jmvc_api:app", host="192.168.99.121", port=8080,log_level="info",reload=True)
